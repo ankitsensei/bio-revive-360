@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 
@@ -14,6 +14,9 @@ type Inputs = {
 };
 
 const OrganBiologicalAge = () => {
+  const [organAge, setOrganAge] = useState<number | null>(null);
+  const [breakdown, setBreakdown] = useState<any>(null);
+
   const {
     register,
     handleSubmit,
@@ -22,17 +25,61 @@ const OrganBiologicalAge = () => {
     mode: "onBlur",
   });
 
+  // 🔬 Biological Age Formula
+  const calculateOrganAge = (data: Inputs) => {
+    const ideal = {
+      heartRate: 70,
+      creatinine: 1.0,
+      altLiver: 25,
+      cognitiveScore: 90,
+      glucose: 90,
+      muscleStrength: 40,
+      testosteroneEstrogenIndex: 1.0,
+    };
+
+    const deviation = {
+      heart: Math.abs((data.heartRate - ideal.heartRate) / ideal.heartRate),
+      kidney: Math.abs((data.creatinine - ideal.creatinine) / ideal.creatinine),
+      liver: Math.abs((data.altLiver - ideal.altLiver) / ideal.altLiver),
+      brain: Math.abs((ideal.cognitiveScore - data.cognitiveScore) / ideal.cognitiveScore),
+      metabolic: Math.abs((data.glucose - ideal.glucose) / ideal.glucose),
+      muscle: Math.abs((ideal.muscleStrength - data.muscleStrength) / ideal.muscleStrength),
+      hormone: Math.abs((data.testosteroneEstrogenIndex - ideal.testosteroneEstrogenIndex) / ideal.testosteroneEstrogenIndex),
+    };
+
+    const weightedScore =
+      deviation.heart * 0.2 +
+      deviation.kidney * 0.15 +
+      deviation.liver * 0.1 +
+      deviation.brain * 0.2 +
+      deviation.metabolic * 0.15 +
+      deviation.muscle * 0.1 +
+      deviation.hormone * 0.1;
+
+    const calculatedAge = Math.round(data.age + weightedScore * 20);
+
+    setOrganAge(calculatedAge);
+    setBreakdown(deviation);
+  };
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log("Submitted Data:", data);
+    calculateOrganAge(data);
+  };
+
+  const getColor = () => {
+    if (!organAge) return "text-gray-600";
+    if (organAge < 30) return "text-green-600";
+    if (organAge < 50) return "text-yellow-600";
+    return "text-red-600";
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center items-center bg-[#F7F8FA] p-6">
+    <div className="w-full min-h-screen flex flex-col items-center bg-[#F7F8FA] p-6">
       <p className="text-3xl font-semibold mb-6">
         Enter your health parameters
       </p>
 
-      <div className="w-125 max-w-2xl bg-white p-8 shadow-2xl rounded-xl shadow-zinc-500/30">
+      <div className="w-125 max-w-3xl bg-white p-8 shadow-2xl rounded-xl">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
 
           {/* Age & Heart Rate */}
@@ -207,9 +254,57 @@ const OrganBiologicalAge = () => {
             Analyze Organ Age
           </button>
         </form>
+
+        {/* 🔥 RESULT SECTION */}
+        {organAge && (
+          <div className="mt-10 border-t pt-6">
+            <h2 className="text-2xl font-semibold mb-4">
+              Biological Organ Age Result
+            </h2>
+
+            {/* Age Display */}
+            <div className="flex items-center gap-4">
+              <div className={`text-5xl font-bold ${getColor()}`}>
+                {organAge}
+              </div>
+              <span className="text-gray-500 text-lg">years</span>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mt-6">
+              <div className="w-full bg-gray-200 rounded-full h-4">
+                <div
+                  className="h-4 rounded-full bg-blue-500 transition-all"
+                  style={{ width: `${Math.min((organAge / 100) * 100, 100)}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Interpretation */}
+            <div className="mt-4 text-sm text-gray-600">
+              {organAge < 30 && "Excellent! Your biological markers are strong."}
+              {organAge >= 30 && organAge < 50 && "Moderate aging detected. Consider lifestyle optimization."}
+              {organAge >= 50 && "Accelerated aging markers detected. Medical consultation recommended."}
+            </div>
+
+            {/* Organ Breakdown */}
+            {breakdown && (
+              <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
+                <div>❤️ Heart Impact: {(breakdown.heart * 100).toFixed(1)}%</div>
+                <div>🧠 Brain Impact: {(breakdown.brain * 100).toFixed(1)}%</div>
+                <div>🩺 Kidney Impact: {(breakdown.kidney * 100).toFixed(1)}%</div>
+                <div>🧪 Liver Impact: {(breakdown.liver * 100).toFixed(1)}%</div>
+                <div>🍬 Metabolic Impact: {(breakdown.metabolic * 100).toFixed(1)}%</div>
+                <div>💪 Muscle Impact: {(breakdown.muscle * 100).toFixed(1)}%</div>
+                <div>🧬 Hormone Impact: {(breakdown.hormone * 100).toFixed(1)}%</div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default OrganBiologicalAge;
+

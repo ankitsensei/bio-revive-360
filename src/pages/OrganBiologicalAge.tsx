@@ -28,12 +28,10 @@ const OrganBiologicalAge = () => {
   const [organAges, setOrganAges] = useState<OrganAges | null>(null);
   const [chronologicalAge, setChronologicalAge] = useState<number>(0);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
-    mode: "onBlur",
-  });
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({ mode: "onBlur" });
 
   const calculateOrganAges = (data: Inputs) => {
-    setChronologicalAge(data.age); // set chronological age for the bar
+    setChronologicalAge(data.age);
 
     const ideal = {
       heartRate: 70,
@@ -77,16 +75,22 @@ const OrganBiologicalAge = () => {
     });
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    calculateOrganAges(data);
-  };
+  const onSubmit: SubmitHandler<Inputs> = (data) => calculateOrganAges(data);
 
   const getAgeBarColor = (overall: number, chrono: number) => {
     const diff = overall - chrono;
-    if (diff <= 0) return "#22c55e"; // green
-    if (diff <= 5) return "#eab308"; // yellow
-    if (diff <= 15) return "#f97316"; // orange
-    return "#ef4444"; // red
+    if (diff <= 0) return "#22c55e"; // green → excellent
+    if (diff <= 5) return "#eab308"; // yellow → good
+    if (diff <= 15) return "#f97316"; // orange → caution
+    return "#ef4444"; // red → alert
+  };
+
+  const getHealthMessage = (overall: number, chrono: number) => {
+    const diff = overall - chrono;
+    if (diff <= 0) return "✅ Excellent! Your biological markers are strong.";
+    if (diff <= 5) return "👍 Good! Some markers could be optimized.";
+    if (diff <= 15) return "⚠️ Caution! Some markers are above ideal levels.";
+    return "🚨 Alert! Your biological age is significantly higher than your chronological age.";
   };
 
   return (
@@ -249,12 +253,12 @@ const OrganBiologicalAge = () => {
                   className="font-bold text-2xl"
                   style={{ color: getAgeBarColor(organAges.overall, chronologicalAge) }}
                 >
-                  {organAges.overall} years old
+                  {organAges.overall} years
                 </span>
               </div>
 
               {/* Age Bar */}
-              <div className="w-full bg-gray-200 h-4 rounded-full">
+              <div className="w-full bg-gray-200 h-4 rounded-full mb-2">
                 <div
                   className="h-4 rounded-full transition-all"
                   style={{
@@ -263,19 +267,24 @@ const OrganBiologicalAge = () => {
                   }}
                 />
               </div>
+
+              {/* Dynamic Message */}
+              <div className="text-center text-gray-700 text-sm mt-2">
+                {getHealthMessage(organAges.overall, chronologicalAge)}
+              </div>
             </div>
 
             {/* Organ Breakdown */}
             <div>
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Organ Breakdown</h3>
               <div className="grid grid-cols-2 gap-4 text-gray-700">
-                <div>❤️ Heart Age: {organAges.heart}</div>
-                <div>🧠 Brain Age:{organAges.brain}</div>
-                <div>🩺 Kidney Age: {organAges.kidney}</div>
-                <div>🧪 Liver Age: {organAges.liver}</div>
-                <div>🍬 Metabolic Age: {organAges.metabolic}</div>
-                <div>💪 Muscle Age: {organAges.muscle}</div>
-                <div>🧬 Hormone Age: {organAges.hormone}</div>
+                <div>❤️ Heart: {organAges.heart}</div>
+                <div>🧠 Brain: {organAges.brain}</div>
+                <div>🩺 Kidney: {organAges.kidney}</div>
+                <div>🧪 Liver: {organAges.liver}</div>
+                <div>🍬 Metabolic: {organAges.metabolic}</div>
+                <div>💪 Muscle: {organAges.muscle}</div>
+                <div>🧬 Hormone: {organAges.hormone}</div>
               </div>
             </div>
 
@@ -287,3 +296,10 @@ const OrganBiologicalAge = () => {
 };
 
 export default OrganBiologicalAge;
+
+
+
+///////////
+
+
+{/* Inputs omitted for brevity - same as before */ }

@@ -10,23 +10,31 @@ type Inputs = {
   cognitiveScore: number;
   glucose: number;
   muscleStrength: number;
-  testosteroneEstrogenIndex: number;
+  hormoneIndex: number;
+};
+
+type OrganAges = {
+  heart: number;
+  kidney: number;
+  liver: number;
+  brain: number;
+  metabolic: number;
+  muscle: number;
+  hormone: number;
+  overall: number;
 };
 
 const OrganBiologicalAge = () => {
-  const [organAge, setOrganAge] = useState<number | null>(null);
-  const [breakdown, setBreakdown] = useState<any>(null);
+  const [organAges, setOrganAges] = useState<OrganAges | null>(null);
+  const [chronologicalAge, setChronologicalAge] = useState<number>(0);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
     mode: "onBlur",
   });
 
-  // 🔬 Biological Age Formula
-  const calculateOrganAge = (data: Inputs) => {
+  const calculateOrganAges = (data: Inputs) => {
+    setChronologicalAge(data.age); // set chronological age for the bar
+
     const ideal = {
       heartRate: 70,
       creatinine: 1.0,
@@ -34,54 +42,59 @@ const OrganBiologicalAge = () => {
       cognitiveScore: 90,
       glucose: 90,
       muscleStrength: 40,
-      testosteroneEstrogenIndex: 1.0,
+      hormoneIndex: 1.0,
     };
 
-    const deviation = {
-      heart: Math.abs((data.heartRate - ideal.heartRate) / ideal.heartRate),
-      kidney: Math.abs((data.creatinine - ideal.creatinine) / ideal.creatinine),
-      liver: Math.abs((data.altLiver - ideal.altLiver) / ideal.altLiver),
-      brain: Math.abs((ideal.cognitiveScore - data.cognitiveScore) / ideal.cognitiveScore),
-      metabolic: Math.abs((data.glucose - ideal.glucose) / ideal.glucose),
-      muscle: Math.abs((ideal.muscleStrength - data.muscleStrength) / ideal.muscleStrength),
-      hormone: Math.abs((data.testosteroneEstrogenIndex - ideal.testosteroneEstrogenIndex) / ideal.testosteroneEstrogenIndex),
-    };
+    const heartDev = Math.abs((data.heartRate - ideal.heartRate) / ideal.heartRate);
+    const kidneyDev = Math.abs((data.creatinine - ideal.creatinine) / ideal.creatinine);
+    const liverDev = Math.abs((data.altLiver - ideal.altLiver) / ideal.altLiver);
+    const brainDev = Math.abs((ideal.cognitiveScore - data.cognitiveScore) / ideal.cognitiveScore);
+    const metabolicDev = Math.abs((data.glucose - ideal.glucose) / ideal.glucose);
+    const muscleDev = Math.abs((ideal.muscleStrength - data.muscleStrength) / ideal.muscleStrength);
+    const hormoneDev = Math.abs((data.hormoneIndex - ideal.hormoneIndex) / ideal.hormoneIndex);
 
-    const weightedScore =
-      deviation.heart * 0.2 +
-      deviation.kidney * 0.15 +
-      deviation.liver * 0.1 +
-      deviation.brain * 0.2 +
-      deviation.metabolic * 0.15 +
-      deviation.muscle * 0.1 +
-      deviation.hormone * 0.1;
+    const heartAge = Math.round(data.age + heartDev * 25);
+    const kidneyAge = Math.round(data.age + kidneyDev * 20);
+    const liverAge = Math.round(data.age + liverDev * 15);
+    const brainAge = Math.round(data.age + brainDev * 25);
+    const metabolicAge = Math.round(data.age + metabolicDev * 20);
+    const muscleAge = Math.round(data.age + muscleDev * 18);
+    const hormoneAge = Math.round(data.age + hormoneDev * 18);
 
-    const calculatedAge = Math.round(data.age + weightedScore * 20);
+    const overall = Math.round(
+      (heartAge + kidneyAge + liverAge + brainAge + metabolicAge + muscleAge + hormoneAge) / 7
+    );
 
-    setOrganAge(calculatedAge);
-    setBreakdown(deviation);
+    setOrganAges({
+      heart: heartAge,
+      kidney: kidneyAge,
+      liver: liverAge,
+      brain: brainAge,
+      metabolic: metabolicAge,
+      muscle: muscleAge,
+      hormone: hormoneAge,
+      overall,
+    });
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    calculateOrganAge(data);
+    calculateOrganAges(data);
   };
 
-  const getColor = () => {
-    if (!organAge) return "text-gray-600";
-    if (organAge < 30) return "text-green-600";
-    if (organAge < 50) return "text-yellow-600";
-    return "text-red-600";
+  const getAgeBarColor = (overall: number, chrono: number) => {
+    const diff = overall - chrono;
+    if (diff <= 0) return "#22c55e"; // green
+    if (diff <= 5) return "#eab308"; // yellow
+    if (diff <= 15) return "#f97316"; // orange
+    return "#ef4444"; // red
   };
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center bg-[#F7F8FA] p-6">
-      <p className="text-3xl font-semibold mb-6">
-        Enter your health parameters
-      </p>
+      <p className="text-3xl font-semibold mb-6">Enter your health parameters</p>
 
       <div className="w-125 max-w-3xl bg-white p-8 shadow-2xl rounded-xl">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-
           {/* Age & Heart Rate */}
           <div className="flex gap-6">
             <div className="flex flex-col w-full">
@@ -97,9 +110,7 @@ const OrganBiologicalAge = () => {
                   max: { value: 120, message: "Age cannot exceed 120 years." },
                 })}
               />
-              {errors.age && (
-                <p className="text-sm text-red-500">{errors.age.message}</p>
-              )}
+              {errors.age && <p className="text-sm text-red-500">{errors.age.message}</p>}
             </div>
 
             <div className="flex flex-col w-full">
@@ -114,11 +125,7 @@ const OrganBiologicalAge = () => {
                   max: { value: 220, message: "Maximum 220 bpm." },
                 })}
               />
-              {errors.heartRate && (
-                <p className="text-sm text-red-500">
-                  {errors.heartRate.message}
-                </p>
-              )}
+              {errors.heartRate && <p className="text-sm text-red-500">{errors.heartRate.message}</p>}
             </div>
           </div>
 
@@ -137,11 +144,7 @@ const OrganBiologicalAge = () => {
                   max: { value: 15, message: "Maximum 15 mg/dL." },
                 })}
               />
-              {errors.creatinine && (
-                <p className="text-sm text-red-500">
-                  {errors.creatinine.message}
-                </p>
-              )}
+              {errors.creatinine && <p className="text-sm text-red-500">{errors.creatinine.message}</p>}
             </div>
 
             <div className="flex flex-col w-full">
@@ -156,11 +159,7 @@ const OrganBiologicalAge = () => {
                   max: { value: 1000, message: "Maximum 1000 U/L." },
                 })}
               />
-              {errors.altLiver && (
-                <p className="text-sm text-red-500">
-                  {errors.altLiver.message}
-                </p>
-              )}
+              {errors.altLiver && <p className="text-sm text-red-500">{errors.altLiver.message}</p>}
             </div>
           </div>
 
@@ -178,11 +177,7 @@ const OrganBiologicalAge = () => {
                   max: { value: 100, message: "Cannot exceed 100." },
                 })}
               />
-              {errors.cognitiveScore && (
-                <p className="text-sm text-red-500">
-                  {errors.cognitiveScore.message}
-                </p>
-              )}
+              {errors.cognitiveScore && <p className="text-sm text-red-500">{errors.cognitiveScore.message}</p>}
             </div>
 
             <div className="flex flex-col w-full">
@@ -197,15 +192,11 @@ const OrganBiologicalAge = () => {
                   max: { value: 600, message: "Maximum 600 mg/dL." },
                 })}
               />
-              {errors.glucose && (
-                <p className="text-sm text-red-500">
-                  {errors.glucose.message}
-                </p>
-              )}
+              {errors.glucose && <p className="text-sm text-red-500">{errors.glucose.message}</p>}
             </div>
           </div>
 
-          {/* Muscle Strength & Hormone Index */}
+          {/* Muscle & Hormone */}
           <div className="flex gap-6">
             <div className="flex flex-col w-full">
               <label>Muscle Strength (kg)</label>
@@ -219,86 +210,75 @@ const OrganBiologicalAge = () => {
                   max: { value: 500, message: "Maximum 500 kg." },
                 })}
               />
-              {errors.muscleStrength && (
-                <p className="text-sm text-red-500">
-                  {errors.muscleStrength.message}
-                </p>
-              )}
+              {errors.muscleStrength && <p className="text-sm text-red-500">{errors.muscleStrength.message}</p>}
             </div>
 
             <div className="flex flex-col w-full">
-              <label>Testosterone / Estrogen Index</label>
+              <label>Hormone Index</label>
               <input
                 type="number"
                 step="0.01"
                 className="inputField"
-                {...register("testosteroneEstrogenIndex", {
+                {...register("hormoneIndex", {
                   valueAsNumber: true,
                   required: "Hormone index is required.",
                   min: { value: 0, message: "Cannot be negative." },
                   max: { value: 1000, message: "Value too high." },
                 })}
               />
-              {errors.testosteroneEstrogenIndex && (
-                <p className="text-sm text-red-500">
-                  {errors.testosteroneEstrogenIndex.message}
-                </p>
-              )}
+              {errors.hormoneIndex && <p className="text-sm text-red-500">{errors.hormoneIndex.message}</p>}
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
+          <button type="submit" className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
             Analyze Organ Age
           </button>
         </form>
 
-        {/* 🔥 RESULT SECTION */}
-        {organAge && (
-          <div className="mt-10 border-t pt-6">
-            <h2 className="text-2xl font-semibold mb-4">
-              Biological Organ Age Result
-            </h2>
+        {/* RESULT SECTION */}
+        {organAges && (
+          <div className="mt-12 space-y-10">
 
-            {/* Age Display */}
-            <div className="flex items-center gap-4">
-              <div className={`text-5xl font-bold ${getColor()}`}>
-                {organAge}
+            {/* Overall Age Bar */}
+            <div className="bg-gray-50 rounded-xl p-6 shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-700 mb-4">Overall Biological Age</h2>
+
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-gray-500">Biological Age</span>
+                <span
+                  className="font-bold text-2xl"
+                  style={{ color: getAgeBarColor(organAges.overall, chronologicalAge) }}
+                >
+                  {organAges.overall} years old
+                </span>
               </div>
-              <span className="text-gray-500 text-lg">years</span>
-            </div>
 
-            {/* Progress Bar */}
-            <div className="mt-6">
-              <div className="w-full bg-gray-200 rounded-full h-4">
+              {/* Age Bar */}
+              <div className="w-full bg-gray-200 h-4 rounded-full">
                 <div
-                  className="h-4 rounded-full bg-blue-500 transition-all"
-                  style={{ width: `${Math.min((organAge / 100) * 100, 100)}%` }}
+                  className="h-4 rounded-full transition-all"
+                  style={{
+                    width: `${Math.min((organAges.overall / 100) * 100, 100)}%`,
+                    backgroundColor: getAgeBarColor(organAges.overall, chronologicalAge),
+                  }}
                 />
               </div>
             </div>
 
-            {/* Interpretation */}
-            <div className="mt-4 text-sm text-gray-600">
-              {organAge < 30 && "Excellent! Your biological markers are strong."}
-              {organAge >= 30 && organAge < 50 && "Moderate aging detected. Consider lifestyle optimization."}
-              {organAge >= 50 && "Accelerated aging markers detected. Medical consultation recommended."}
+            {/* Organ Breakdown */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-700 mb-4">Organ Breakdown</h3>
+              <div className="grid grid-cols-2 gap-4 text-gray-700">
+                <div>❤️ Heart Age: {organAges.heart}</div>
+                <div>🧠 Brain Age:{organAges.brain}</div>
+                <div>🩺 Kidney Age: {organAges.kidney}</div>
+                <div>🧪 Liver Age: {organAges.liver}</div>
+                <div>🍬 Metabolic Age: {organAges.metabolic}</div>
+                <div>💪 Muscle Age: {organAges.muscle}</div>
+                <div>🧬 Hormone Age: {organAges.hormone}</div>
+              </div>
             </div>
 
-            {/* Organ Breakdown */}
-            {breakdown && (
-              <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
-                <div>❤️ Heart Impact: {(breakdown.heart * 100).toFixed(1)}%</div>
-                <div>🧠 Brain Impact: {(breakdown.brain * 100).toFixed(1)}%</div>
-                <div>🩺 Kidney Impact: {(breakdown.kidney * 100).toFixed(1)}%</div>
-                <div>🧪 Liver Impact: {(breakdown.liver * 100).toFixed(1)}%</div>
-                <div>🍬 Metabolic Impact: {(breakdown.metabolic * 100).toFixed(1)}%</div>
-                <div>💪 Muscle Impact: {(breakdown.muscle * 100).toFixed(1)}%</div>
-                <div>🧬 Hormone Impact: {(breakdown.hormone * 100).toFixed(1)}%</div>
-              </div>
-            )}
           </div>
         )}
       </div>
@@ -307,4 +287,3 @@ const OrganBiologicalAge = () => {
 };
 
 export default OrganBiologicalAge;
-

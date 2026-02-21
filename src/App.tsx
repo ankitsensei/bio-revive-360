@@ -1,8 +1,9 @@
-import React from 'react'
-
+import OrganBiologicalAge from "./pages/OrganBiologicalAge"
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <OrganBiologicalAge />
+    </div>
   )
 }
 

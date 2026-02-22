@@ -140,183 +140,187 @@ export default function OrganBiologicalAge2() {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center bg-gray-100 p-6">
-      <h1 className="text-3xl font-semibold mb-6">Lifestyle Biological Age Analyzer</h1>
+      <div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded-xl shadow-xl w-full max-w-3xl space-y-6"
-      >
 
-        {/* Age + Heart Rate */}
-        <div className="flex gap-6">
-          <div className="flex flex-col w-full">
-            <label className="font-medium">Age</label>
-            <input
-              type="number"
-              className="inputField"
-              {...register("age", {
-                valueAsNumber: true,
-                required: "Age is required.",
-                min: { value: 18, message: "Minimum age is 18." },
-                max: { value: 120, message: "Maximum age is 120." },
-              })}
-            />
-            {errors.age && (
-              <p className="text-sm text-red-500 mt-1">{errors.age.message}</p>
-            )}
+        <h1 className="text-3xl font-semibold mb-6">Lifestyle Biological Age Analyzer</h1>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white p-8 rounded-xl shadow-xl w-full max-w-3xl space-y-6"
+        >
+
+          {/* Age + Heart Rate */}
+          <div className="flex gap-6">
+            <div className="flex flex-col w-full">
+              <label className="font-medium">Age</label>
+              <input
+                type="number"
+                className="inputField"
+                {...register("age", {
+                  valueAsNumber: true,
+                  required: "Age is required.",
+                  min: { value: 18, message: "Minimum age is 18." },
+                  max: { value: 120, message: "Maximum age is 120." },
+                })}
+              />
+              {errors.age && (
+                <p className="text-sm text-red-500 mt-1">{errors.age.message}</p>
+              )}
+            </div>
+
+            <div className="flex flex-col w-full">
+              <label className="font-medium">Heart Rate (bpm)</label>
+              <input
+                type="number"
+                className="inputField"
+                {...register("heartRate", {
+                  valueAsNumber: true,
+                  required: "Heart rate is required.",
+                  min: { value: 40, message: "Too low. Minimum 40 bpm." },
+                  max: { value: 200, message: "Too high. Maximum 200 bpm." },
+                })}
+              />
+              {errors.heartRate && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.heartRate.message}
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-col w-full">
-            <label className="font-medium">Heart Rate (bpm)</label>
-            <input
-              type="number"
-              className="inputField"
-              {...register("heartRate", {
-                valueAsNumber: true,
-                required: "Heart rate is required.",
-                min: { value: 40, message: "Too low. Minimum 40 bpm." },
-                max: { value: 200, message: "Too high. Maximum 200 bpm." },
-              })}
-            />
-            {errors.heartRate && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.heartRate.message}
-              </p>
-            )}
-          </div>
-        </div>
+          {/* Glucose + Stress */}
+          <div className="flex gap-6">
+            <div className="flex flex-col w-full">
+              <label className="font-medium">Glucose (mg/dL)</label>
+              <input
+                type="number"
+                className="inputField"
+                {...register("glucose", {
+                  valueAsNumber: true,
+                  required: "Glucose level is required.",
+                  min: { value: 50, message: "Too low. Minimum 50 mg/dL." },
+                  max: { value: 400, message: "Too high. Maximum 400 mg/dL." },
+                })}
+              />
+              {errors.glucose && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.glucose.message}
+                </p>
+              )}
+            </div>
 
-        {/* Glucose + Stress */}
-        <div className="flex gap-6">
-          <div className="flex flex-col w-full">
-            <label className="font-medium">Glucose (mg/dL)</label>
-            <input
-              type="number"
-              className="inputField"
-              {...register("glucose", {
-                valueAsNumber: true,
-                required: "Glucose level is required.",
-                min: { value: 50, message: "Too low. Minimum 50 mg/dL." },
-                max: { value: 400, message: "Too high. Maximum 400 mg/dL." },
-              })}
-            />
-            {errors.glucose && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.glucose.message}
-              </p>
-            )}
+            <div className="flex flex-col w-full">
+              <label className="font-medium">Stress Level (0–10)</label>
+              <input
+                type="number"
+                className="inputField"
+                {...register("stress", {
+                  valueAsNumber: true,
+                  required: "Stress level is required.",
+                  min: { value: 0, message: "Cannot be negative." },
+                  max: { value: 10, message: "Maximum stress level is 10." },
+                })}
+              />
+              {errors.stress && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.stress.message}
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-col w-full">
-            <label className="font-medium">Stress Level (0–10)</label>
-            <input
-              type="number"
-              className="inputField"
-              {...register("stress", {
-                valueAsNumber: true,
-                required: "Stress level is required.",
-                min: { value: 0, message: "Cannot be negative." },
-                max: { value: 10, message: "Maximum stress level is 10." },
-              })}
-            />
-            {errors.stress && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.stress.message}
-              </p>
-            )}
-          </div>
-        </div>
+          {/* Screen Time + Muscle */}
+          <div className="flex gap-6">
+            <div className="flex flex-col w-full">
+              <label className="font-medium">Screen Time (hrs/day)</label>
+              <input
+                type="number"
+                className="inputField"
+                {...register("screenTime", {
+                  valueAsNumber: true,
+                  required: "Screen time is required.",
+                  min: { value: 0, message: "Cannot be negative." },
+                  max: { value: 24, message: "Cannot exceed 24 hours." },
+                })}
+              />
+              {errors.screenTime && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.screenTime.message}
+                </p>
+              )}
+            </div>
 
-        {/* Screen Time + Muscle */}
-        <div className="flex gap-6">
+            <div className="flex flex-col w-full">
+              <label className="font-medium">Muscle Strength (kg)</label>
+              <input
+                type="number"
+                className="inputField"
+                {...register("muscleStrength", {
+                  valueAsNumber: true,
+                  required: "Muscle strength is required.",
+                  min: { value: 1, message: "Must be at least 1 kg." },
+                  max: { value: 300, message: "Maximum allowed is 300 kg." },
+                })}
+              />
+              {errors.muscleStrength && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.muscleStrength.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Sleep */}
           <div className="flex flex-col w-full">
-            <label className="font-medium">Screen Time (hrs/day)</label>
+            <label className="font-medium">Sleep Hours</label>
             <input
               type="number"
               className="inputField"
-              {...register("screenTime", {
+              {...register("sleepHours", {
                 valueAsNumber: true,
-                required: "Screen time is required.",
+                required: "Sleep hours are required.",
                 min: { value: 0, message: "Cannot be negative." },
                 max: { value: 24, message: "Cannot exceed 24 hours." },
               })}
             />
-            {errors.screenTime && (
+            {errors.sleepHours && (
               <p className="text-sm text-red-500 mt-1">
-                {errors.screenTime.message}
+                {errors.sleepHours.message}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col w-full">
-            <label className="font-medium">Muscle Strength (kg)</label>
-            <input
-              type="number"
-              className="inputField"
-              {...register("muscleStrength", {
-                valueAsNumber: true,
-                required: "Muscle strength is required.",
-                min: { value: 1, message: "Must be at least 1 kg." },
-                max: { value: 300, message: "Maximum allowed is 300 kg." },
-              })}
-            />
-            {errors.muscleStrength && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.muscleStrength.message}
-              </p>
-            )}
+          <button
+            type="submit"
+            className="bg-blue-600 text-white py-3 rounded-lg w-full hover:bg-blue-700 transition"
+          >
+            Analyze
+          </button>
+        </form>
+
+        {results && (
+          <div className="mt-10 bg-white p-8 rounded-xl shadow-xl w-full max-w-xl space-y-2">
+            <h2 className="text-xl font-semibold mb-4">Results</h2>
+
+            <div>Heart Age: {results.heart}</div>
+            <div>Brain Age: {results.brain}</div>
+            <div>Kidney Age: {results.kidney}</div>
+            <div>Liver Age: {results.liver}</div>
+            <div>Pancreas Age: {results.pancreas}</div>
+            <div>Muscle Age: {results.muscle}</div>
+            <div>Hormonal Age: {results.hormonal}</div>
+
+            <div className="mt-4 font-bold text-lg">
+              Full Body Aging Index: {results.overall}
+            </div>
+
+            <div className="text-orange-600 font-semibold">
+              {results.status}
+            </div>
           </div>
-        </div>
-
-        {/* Sleep */}
-        <div className="flex flex-col w-full">
-          <label className="font-medium">Sleep Hours</label>
-          <input
-            type="number"
-            className="inputField"
-            {...register("sleepHours", {
-              valueAsNumber: true,
-              required: "Sleep hours are required.",
-              min: { value: 0, message: "Cannot be negative." },
-              max: { value: 24, message: "Cannot exceed 24 hours." },
-            })}
-          />
-          {errors.sleepHours && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.sleepHours.message}
-            </p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-3 rounded-lg w-full hover:bg-blue-700 transition"
-        >
-          Analyze
-        </button>
-      </form>
-
-      {results && (
-        <div className="mt-10 bg-white p-8 rounded-xl shadow-xl w-full max-w-xl space-y-2">
-          <h2 className="text-xl font-semibold mb-4">Results</h2>
-
-          <div>Heart Age: {results.heart}</div>
-          <div>Brain Age: {results.brain}</div>
-          <div>Kidney Age: {results.kidney}</div>
-          <div>Liver Age: {results.liver}</div>
-          <div>Pancreas Age: {results.pancreas}</div>
-          <div>Muscle Age: {results.muscle}</div>
-          <div>Hormonal Age: {results.hormonal}</div>
-
-          <div className="mt-4 font-bold text-lg">
-            Full Body Aging Index: {results.overall}
-          </div>
-
-          <div className="text-orange-600 font-semibold">
-            {results.status}
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

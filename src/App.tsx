@@ -4,7 +4,7 @@ import Hero from "./pages/Hero"
 const App = () => {
   return (
     <div>
-      <div className="px-40 pt-10">
+      <div className="px-40 pt-10 background h-screen">
         <Hero />
         {/* <OrganBiologicalAge /> */}
         {/* <OrganBiologicalAge2 /> */}

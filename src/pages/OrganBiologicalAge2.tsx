@@ -27,9 +27,9 @@ type Results = {
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
-const normalize = (value: number, ideal: number, tolerance: number) => {
-  return clamp(Math.abs(value - ideal) / tolerance, 0, 1);
-};
+// const normalize = (value: number, ideal: number, tolerance: number) => {
+//   return clamp(Math.abs(value - ideal) / tolerance, 0, 1);
+// };
 
 export default function OrganBiologicalAge2() {
   const [results, setResults] = useState<Results | null>(null);

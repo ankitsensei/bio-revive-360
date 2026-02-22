@@ -296,10 +296,3 @@ const OrganBiologicalAge = () => {
 };
 
 export default OrganBiologicalAge;
-
-
-
-///////////
-
-
-{/* Inputs omitted for brevity - same as before */ }

@@ -50,9 +50,12 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop Button */}
-        <button className="hidden md:block rounded-full bg-black text-white px-5 py-2 hover:scale-105 transition">
+        <NavLink
+          to="/Assessment"
+          className="hidden md:block rounded-full bg-black text-white px-5 py-2 hover:scale-105 transition"
+        >
           Get Started
-        </button>
+        </NavLink>
 
         {/* Mobile Icon */}
         <div
@@ -94,9 +97,12 @@ const Navbar = () => {
           </NavLink>
         </ul>
 
-        <button className="mt-6 rounded-full bg-black text-white px-8 py-3 text-lg hover:scale-105 transition">
+        <NavLink
+          to="/Assessment"
+          className="hidden md:block rounded-full bg-black text-white px-5 py-2 hover:scale-105 transition"
+        >
           Get Started
-        </button>
+        </NavLink>
       </div>
     </nav>
   )

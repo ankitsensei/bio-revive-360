@@ -9,15 +9,23 @@
 .background {
   background: linear-gradient(
     120deg,
-    #e0f7ff,
+    /* #e0f7ff,
     #b3ecff,
     #99ddff,
     #c7d2fe,
     #a5f3fc,
-    #bae6fd
+    #bae6fd */
+    /* new colors */ #e0f7ff,
+    #c2efff,
+    #a5f3fc,
+    #bae6fd,
+    #d0d4fe,
+    #f0e6ff,
+    #e0f5ff,
+    #c7d2fe
   );
   background-size: 400% 400%;
-  animation: randomGradient 50s ease-in-out infinite;
+  animation: randomGradient 30s ease-in-out infinite;
 }
 
 @keyframes randomGradient {
@@ -45,7 +53,6 @@
 }
 
 .textBackground {
-
   background: linear-gradient(
     120deg,
     #0f2027,

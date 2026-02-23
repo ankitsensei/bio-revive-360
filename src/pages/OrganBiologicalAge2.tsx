@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import Navbar from "../components/Navbar";
 
 type Inputs = {
   age: number;
@@ -139,15 +140,16 @@ export default function OrganBiologicalAge2() {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center bg-gray-100 p-6">
+    <div className="w-full min-h-screen flex flex-col items-center bg-[#F7F8FA] lg:px-40 lg:pt-10 pb-20 pt-5 background">
+      <Navbar />
       <div>
 
 
-        <h1 className="text-3xl font-semibold mb-6">Lifestyle Biological Age Analyzer</h1>
+        <h1 className="text-3xl font-semibold mb-6 mt-20 text-center">Lifestyle Biological Age Analyzer</h1>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-8 rounded-xl shadow-xl w-full max-w-3xl space-y-6"
+          className="bg-white p-10 rounded-4xl shadow-xl w-full max-w-3xl space-y-6"
         >
 
           {/* Age + Heart Rate */}
@@ -293,7 +295,7 @@ export default function OrganBiologicalAge2() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white py-3 rounded-lg w-full hover:bg-blue-700 transition"
+            className="bg-black text-white py-3 rounded-full w-full hover:bg-blue-700 transition"
           >
             Analyze
           </button>

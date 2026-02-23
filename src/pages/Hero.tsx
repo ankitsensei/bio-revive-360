@@ -1,7 +1,6 @@
 import Navbar from '../components/Navbar'
 import { FaArrowCircleRight } from "react-icons/fa";
 
-
 const Hero = () => {
   return (
     <div className='w-full h-full'>

@@ -24,10 +24,10 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-8 lg:gap-12 font-medium">
-          <li className="cursor-pointer hover:text-gray-500 transition">Product</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Services</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Activity</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Support</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Assessment</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Modules</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Lifestyle</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Vision</li>
         </ul>
 
         {/* Desktop Button */}
@@ -53,10 +53,10 @@ const Navbar = () => {
       >
 
         <ul className="flex flex-col items-center gap-8 text-2xl font-semibold">
-          <li className="cursor-pointer hover:text-gray-500 transition">Product</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Services</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Activity</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Support</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Assessment</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Modules</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Lifestyle</li>
+          <li className="cursor-pointer hover:text-gray-500 transition">Vision</li>
         </ul>
 
         <button className="mt-6 rounded-full bg-black text-white px-8 py-3 text-lg hover:scale-105 transition">

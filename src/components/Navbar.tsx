@@ -72,10 +72,26 @@ const Navbar = () => {
       >
 
         <ul className="flex flex-col items-center gap-8 text-2xl font-semibold">
-          <li className="cursor-pointer hover:text-gray-500 transition">Assessment</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Modules</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Lifestyle</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Vision</li>
+          <NavLink
+            to="/Assessment"
+          >
+            Assessment
+          </NavLink>
+          <NavLink
+            to="/Modules"
+          >
+            Modules
+          </NavLink>
+          <NavLink
+            to="/Lifestyle"
+          >
+            Lifestyle
+          </NavLink>
+          <NavLink
+            to="/Vision"
+          >
+            Visions
+          </NavLink>
         </ul>
 
         <button className="mt-6 rounded-full bg-black text-white px-8 py-3 text-lg hover:scale-105 transition">

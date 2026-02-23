@@ -140,162 +140,48 @@ export default function OrganBiologicalAge2() {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center bg-[#F7F8FA] lg:px-40 lg:pt-10 pb-20 pt-5 background">
+    <div className="w-full min-h-screen flex flex-col items-center bg-[#F7F8FA] lg:px-40 lg:pt-10 pb-20 pt-5 px-2 md:px-0">
       <Navbar />
       <div>
-
-
         <h1 className="text-3xl font-semibold mb-6 mt-20 text-center">Lifestyle Biological Age Analyzer</h1>
-
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-10 rounded-4xl shadow-xl w-full max-w-3xl space-y-6"
+          className="bg-white p-6 sm:p-10 rounded-4xl shadow-xl w-full max-w-3xl grid grid-cols-2 gap-6"
         >
-
-          {/* Age + Heart Rate */}
-          <div className="flex gap-6">
-            <div className="flex flex-col w-full">
-              <label className="font-medium">Age</label>
+          {[
+            ["age", "Age", 18, 120],
+            ["heartRate", "Heart Rate (bpm)", 40, 200],
+            ["glucose", "Glucose (mg/dL)", 50, 400],
+            ["stress", "Stress Level (0–10)", 0, 10],
+            ["screenTime", "Screen Time (hrs/day)", 0, 24],
+            ["muscleStrength", "Muscle Strength (kg)", 1, 300],
+            ["sleepHours", "Sleep Hours", 0, 24],
+          ].map(([name, label, min, max]) => (
+            <div key={name} className="flex flex-col w-full">
+              <label className="font-medium mb-1">{label}</label>
               <input
                 type="number"
-                className="inputField"
-                {...register("age", {
+                step="any"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                {...register(name as keyof Inputs, {
                   valueAsNumber: true,
-                  required: "Age is required.",
-                  min: { value: 18, message: "Minimum age is 18." },
-                  max: { value: 120, message: "Maximum age is 120." },
+                  required: `${label} is required.`,
+                  min: { value: Number(min), message: `Minimum ${min}.` },
+                  max: { value: Number(max), message: `Maximum ${max}.` },
                 })}
               />
-              {errors.age && (
-                <p className="text-sm text-red-500 mt-1">{errors.age.message}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col w-full">
-              <label className="font-medium">Heart Rate (bpm)</label>
-              <input
-                type="number"
-                className="inputField"
-                {...register("heartRate", {
-                  valueAsNumber: true,
-                  required: "Heart rate is required.",
-                  min: { value: 40, message: "Too low. Minimum 40 bpm." },
-                  max: { value: 200, message: "Too high. Maximum 200 bpm." },
-                })}
-              />
-              {errors.heartRate && (
+              {errors[name as keyof Inputs] && (
                 <p className="text-sm text-red-500 mt-1">
-                  {errors.heartRate.message}
+                  {errors[name as keyof Inputs]?.message as string}
                 </p>
               )}
             </div>
-          </div>
+          ))}
 
-          {/* Glucose + Stress */}
-          <div className="flex gap-6">
-            <div className="flex flex-col w-full">
-              <label className="font-medium">Glucose (mg/dL)</label>
-              <input
-                type="number"
-                className="inputField"
-                {...register("glucose", {
-                  valueAsNumber: true,
-                  required: "Glucose level is required.",
-                  min: { value: 50, message: "Too low. Minimum 50 mg/dL." },
-                  max: { value: 400, message: "Too high. Maximum 400 mg/dL." },
-                })}
-              />
-              {errors.glucose && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.glucose.message}
-                </p>
-              )}
-            </div>
-
-            <div className="flex flex-col w-full">
-              <label className="font-medium">Stress Level (0–10)</label>
-              <input
-                type="number"
-                className="inputField"
-                {...register("stress", {
-                  valueAsNumber: true,
-                  required: "Stress level is required.",
-                  min: { value: 0, message: "Cannot be negative." },
-                  max: { value: 10, message: "Maximum stress level is 10." },
-                })}
-              />
-              {errors.stress && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.stress.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Screen Time + Muscle */}
-          <div className="flex gap-6">
-            <div className="flex flex-col w-full">
-              <label className="font-medium">Screen Time (hrs/day)</label>
-              <input
-                type="number"
-                className="inputField"
-                {...register("screenTime", {
-                  valueAsNumber: true,
-                  required: "Screen time is required.",
-                  min: { value: 0, message: "Cannot be negative." },
-                  max: { value: 24, message: "Cannot exceed 24 hours." },
-                })}
-              />
-              {errors.screenTime && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.screenTime.message}
-                </p>
-              )}
-            </div>
-
-            <div className="flex flex-col w-full">
-              <label className="font-medium">Muscle Strength (kg)</label>
-              <input
-                type="number"
-                className="inputField"
-                {...register("muscleStrength", {
-                  valueAsNumber: true,
-                  required: "Muscle strength is required.",
-                  min: { value: 1, message: "Must be at least 1 kg." },
-                  max: { value: 300, message: "Maximum allowed is 300 kg." },
-                })}
-              />
-              {errors.muscleStrength && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.muscleStrength.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Sleep */}
-          <div className="flex flex-col w-full">
-            <label className="font-medium">Sleep Hours</label>
-            <input
-              type="number"
-              className="inputField"
-              {...register("sleepHours", {
-                valueAsNumber: true,
-                required: "Sleep hours are required.",
-                min: { value: 0, message: "Cannot be negative." },
-                max: { value: 24, message: "Cannot exceed 24 hours." },
-              })}
-            />
-            {errors.sleepHours && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.sleepHours.message}
-              </p>
-            )}
-          </div>
-
+          {/* Submit button spans both columns */}
           <button
             type="submit"
-            className="bg-black text-white py-3 rounded-full w-full hover:bg-blue-700 transition"
+            className="col-span-2 bg-black text-white py-3 rounded-full w-full hover:bg-blue-700 transition"
           >
             Analyze
           </button>

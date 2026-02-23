@@ -91,7 +91,7 @@ const OrganBiologicalAge = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F7F8FA]">
+    <div className="min-h-screen w-full bg-[#F7F8FA] pt-10 px-0">
       <Navbar />
       <div className="px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32 py-8 flex flex-col items-center">
         <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-center mb-8 mt-6">

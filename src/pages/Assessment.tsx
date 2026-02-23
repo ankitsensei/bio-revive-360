@@ -8,8 +8,8 @@ const Assessment = () => {
         <p className="font-semibold text-zinc-400">Assessments</p>
         <p className="text-5xl font-semibold">Check your <span className="textBackground">Organs's Age</span></p>
         <div className="flex gap-2 mt-10">
-          <AssessmentComp heading="Organ Biological Age Detection System" para="It takes following parameters and tells biological age of organs:-" list={["Age", "Heart Rate", "Creatinine", "ALT Liver", "Cognitive Score ", "Glucose", "Muscle Strength", "Testosterone/Estrogen Index"]} />
-          <AssessmentComp heading="Epigenetic Multi-Organ Biological Aging Simulation" para="It takes following parameters and tells biological age of organs:-" list={["Age", "Heart Rate", "Glucose", "Stress", "Screen Time", "Muscle Strength", "Sleep Hours"]} />
+          <AssessmentComp heading="Organ Biological Age Detection System" para="It takes following parameters and tells biological age of organs:-" list={["Age", "Heart Rate", "Creatinine", "ALT Liver", "Cognitive Score ", "Glucose", "Muscle Strength", "Testosterone/Estrogen Index"]} link="/OrganBiologicalAge" />
+          <AssessmentComp heading="Epigenetic Multi-Organ Biological Aging Simulation" para="It takes following parameters and tells biological age of organs:-" list={["Age", "Heart Rate", "Glucose", "Stress", "Screen Time", "Muscle Strength", "Sleep Hours"]} link="/OrganBiologicalAge2" />
         </div>
       </div>
     </div>

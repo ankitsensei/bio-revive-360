@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { NavLink } from "react-router";
 import MainLogo from "../assets/bioRevive360.png"
 import { FaBars, FaTimes } from "react-icons/fa"
 
@@ -15,19 +16,37 @@ const Navbar = () => {
       <div className="flex justify-between items-center">
 
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <NavLink className="flex items-center gap-3"
+          to="/"
+        >
           <img src={MainLogo} alt="logo" className="w-10 sm:w-12 rounded-full" />
           <span className="font-semibold text-lg sm:text-xl">
             Bio Revive 360
           </span>
-        </div>
+        </NavLink>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-8 lg:gap-12 font-medium">
-          <li className="cursor-pointer hover:text-gray-500 transition">Assessment</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Modules</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Lifestyle</li>
-          <li className="cursor-pointer hover:text-gray-500 transition">Vision</li>
+          <NavLink
+            to="/Assessment"
+          >
+            Assessment
+          </NavLink>
+          <NavLink
+            to="/Modules"
+          >
+            Modules
+          </NavLink>
+          <NavLink
+            to="/Lifestyle"
+          >
+            Lifestyle
+          </NavLink>
+          <NavLink
+            to="/Vision"
+          >
+            Visions
+          </NavLink>
         </ul>
 
         {/* Desktop Button */}
